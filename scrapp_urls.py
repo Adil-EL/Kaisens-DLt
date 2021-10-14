@@ -1,7 +1,6 @@
 import requests
 import urllib
 import json
-import pandas as pd
 from requests_html import HTML
 from requests_html import HTMLSession
 from collections import OrderedDict
@@ -80,7 +79,7 @@ def get_bs(url):
     return BeautifulSoup(r.text, 'html.parser')
 
 
-def extract_comments(session, base_url, post_bs, post_url):
+def extract_comments(post_bs, post_url):
     """
     Extracts all coments from post
     """
@@ -210,5 +209,10 @@ def load_json_urls():
 
 
 
+#--------------------- Tests ----------------------------------
+subject = 'Deces de jaques chirac'
+social_media = 'Facebook'
 
+links = scrape_google(subject,social_media)
 
+print(links[5])
