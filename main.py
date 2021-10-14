@@ -42,13 +42,14 @@ def urls_collector(base_url, subject,social_media, max_posts):
         urls.append(url)
     
 
-    pass
+    return urls
 
 def save_json_urls(urls_list):
     ''' 
     This function saves on the desk the elements of a list as a json file 
     '''
-    pass
+    with open('app.json', 'w') as f:
+        json.dump(urls_list, f)
 
 def load_json_urls():
     '''
