@@ -1,2 +1,29 @@
 The two deep learning theoritical questions are the the 'Test Deep L- Adil EL HAKOUNI.odt' file
 The coding part is grouped in this reposetory 
+
+Steps :
+1- create a python virtual env
+2- install dependences from requirements.txt
+3- run the main script
+
+make sure that a laocal mongodb server is running on localhost with defautlt port 27017
+
+there is two modules in this project:
+
+Module 1: deals with the scrapping part 
+
+scrapping urls from google search
+
+sctapping the content of a publication based on it's url
+
+Module 2 : Deals with the mongoDB data management part
+
+add a scrapped content to a mongoDB database 
+
+
+NB !! 
+This project is ongoing, this is not a stable version
+
+
+
+
