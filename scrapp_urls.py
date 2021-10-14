@@ -79,69 +79,6 @@ def get_bs(url):
     return BeautifulSoup(r.text, 'html.parser')
 
 
-def extract_comments(post_bs, post_url):
-    """
-    Extracts all coments from post
-    """
-    comments = list()
-    show_more_url = post_bs.find('a', href=re.compile('/story\.php\?story'))['href']
-    first_comment_page = True
-
-    logging.info('Scraping comments from {}'.format(post_url))
-    while True:
-
-        logging.info('[!] Scraping comments.')
-        time.sleep(3)
-        if first_comment_page:
-            first_comment_page = False
-        else:
-            post_bs = get_bs(session, base_url+show_more_url)
-            time.sleep(3)
-        
-        try:
-            comments_elements = post_bs.find('div', id=re.compile('composer')).next_sibling\
-                .find_all('div', id=re.compile('^\d+'))
-        except Exception:
-            pass
-
-        if len(comments_elements) != 0:
-            logging.info('[!] There are comments.')
-        else:
-            break
-        
-        for comment in comments_elements:
-            comment_data = OrderedDict()
-            comment_data['text'] = list()
-            try:
-                comment_strings = comment.find('h3').next_sibling.strings
-                for string in comment_strings:
-                    comment_data['text'].append(string)
-            except Exception:
-                pass
-            
-            try:
-                media = comment.find('h3').next_sibling.next_sibling.children
-                if media is not None:
-                    for element in media:
-                        comment_data['media_url'] = element['src']
-                else:
-                    comment_data['media_url'] = ''
-            except Exception:
-                pass
-            
-            comment_data['profile_name'] = comment.find('h3').a.string
-            comment_data['profile_url'] = comment.find('h3').a['href'].split('?')[0]
-            comments.append(dict(comment_data))
-        
-        show_more_url = post_bs.find('a', href=re.compile('/story\.php\?story'))
-        if 'View more' in show_more_url.text:
-            logging.info('[!] More comments.')
-            show_more_url = show_more_url['href']
-        else:
-            break
-    
-    return comments
-
 
 def scrape_post( url):
     """
@@ -180,11 +117,6 @@ def scrape_post( url):
         post_data['media_url'] = 'www.test-scrapping.com'
     
 
-    try:
-        post_data['comments'] = extract_comments(session, base_url, post_bs, post_url)
-    except Exception:
-        post_data['comments'] = []
-    
     return dict(post_data)
 
 
@@ -215,4 +147,6 @@ social_media = 'Facebook'
 
 links = scrape_google(subject,social_media)
 
-print(links[5])
+url = links[5]
+dicc = scrape_post(url)
+print(dicc)
