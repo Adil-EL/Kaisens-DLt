@@ -1,5 +1,6 @@
 import requests
 import urllib
+import json
 import pandas as pd
 from requests_html import HTML
 from requests_html import HTMLSession
@@ -189,7 +190,22 @@ def scrape_post( url):
 
 
 
+#------------------------------ Scrapped data good practices----------------
+""" To be implemented in later updates """
 
+def save_json_urls(urls_list):
+    ''' 
+    This function saves on the desk the elements of a list as a json file 
+    '''
+    with open('app.json', 'w') as f:
+        json.dump(urls_list, f)
+
+def load_json_urls():
+    '''
+    returns a python list containing the urls scrapped from google
+
+    '''
+    pass
 
 
 

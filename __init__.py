@@ -1,1 +1,1 @@
-'Packedging the python project '
+'Packaging the python project '
