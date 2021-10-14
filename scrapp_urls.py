@@ -26,8 +26,23 @@ def get_source(url):
         print(e)
 
 
-def scrape_google(query):
+def scrape_google(subject,social_media):
+    """
+        Search on google the facebook [Social media] posts related to the death of 
+    Jaques Chirac [Subject] 
 
+    inputs :
+
+    subject : the subject you are intersted in (the death of Jacques chirac for example)
+    social_media : sting, the name of the social media you want to find information in
+    FACEBOOK for exmample.
+    
+
+    Output:
+    This function returns a list of urls dealing with subject and save it as a json file 
+    """
+
+    query = subject + ' ' + social_media
     query = urllib.parse.quote_plus(query)
     response = get_source("https://www.google.co.uk/search?q=" + query)
 
@@ -50,8 +65,10 @@ def scrape_google(query):
 
 
 def get_bs(url):
-    """Makes a GET requests using the given Session object
+    """
+    Makes a GET requests using the given Session object
     and returns a BeautifulSoup object.
+    
     """
     r = None
     while True:
@@ -63,7 +80,8 @@ def get_bs(url):
 
 
 def extract_comments(session, base_url, post_bs, post_url):
-    """Extracts all coments from post
+    """
+    Extracts all coments from post
     """
     comments = list()
     show_more_url = post_bs.find('a', href=re.compile('/story\.php\?story'))['href']
@@ -126,7 +144,19 @@ def extract_comments(session, base_url, post_bs, post_url):
 
 
 def scrape_post( url):
-    """Goes to post URL and extracts post data.
+    """
+    Goes to post URL and extracts post data.
+    This functions extracts relevant information from a social media post.
+    
+    Input :
+    url : the url of a social media post related to a subject
+    extract the content and put it in a dictionnary
+
+    output :
+    returns a python dictionnary of relevant content related to a subject, the post url,
+    the text in the post, the media (images, videos,etc) and all the comments (a nested 
+    dictionnary with comment's specific keys (attributes))
+    
     """
     post_data = OrderedDict()
 
@@ -150,45 +180,19 @@ def scrape_post( url):
         post_data['media_url'] = 'www.test-scrapping.com'
     
 
-    # try:
-    #     post_data['comments'] = extract_comments(session, base_url, post_bs, post_url)
-    # except Exception:
-    #     post_data['comments'] = []
+    try:
+        post_data['comments'] = extract_comments(session, base_url, post_bs, post_url)
+    except Exception:
+        post_data['comments'] = []
     
     return dict(post_data)
 
 
-links = scrape_google(query = 'mort de jaques chirac facebook')
-url = links[5]
-print(scrape_post( url))
 
 
 
 
 
-
-
-
-
-
-# import requests
-# from bs4 import BeautifulSoup
-
-# base_url = 'https://google.com/search?q='
-
-# subject = 'mort de jacques chirac'
-# social_media = 'facebook'
-
-# url = base_url + subject + ' ' + social_media
-# url = 'https://google.com/search?q=<Query>'
-# reqs = requests.get(url)
-# soup = BeautifulSoup(reqs.text, 'html.parser')
-
-# urls = []
-# for link in soup.find_all('a'):
-#     url = link.get('href')
-#     print(url)
-#     urls.append(url)
 
 
 
